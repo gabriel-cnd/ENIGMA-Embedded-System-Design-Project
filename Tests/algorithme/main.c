@@ -72,7 +72,7 @@ int opt_debug = 0;
 int main(int argc, char *argv[])
 {
     struct Enigma machine = {}; // initialized to defaults
-    int i, character, index;
+    int i, character;
 
     // Command line options
     

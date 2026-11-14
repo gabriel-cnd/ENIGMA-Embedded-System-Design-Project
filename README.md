@@ -1,172 +1,140 @@
-# ENIGMA Project
-**Multi HEIG-VD Project**  
-**2026**
+# ENIGMA Embedded System
 
-The goal of this project is to design and build a fully functional and accurate prototype of the **Enigma machine** using modern embedded technologies. Originally used from the 1930s until the end of the Second World War, the Enigma machine encrypted and decrypted messages for both commercial and military purposes. Today, it remains one of the most iconic devices in the history of cryptography. This project combines software development, embedded programming, and hardware integration to recreate the Enigma machine's functionality while providing an educational demonstration of its operation. The project is structured to allow for modular testing of each hardware component before full integration, ensuring a robust and reliable final product.
+An educational, electromechanical Enigma-machine prototype developed as a 2026 multidisciplinary project at HEIG-VD.
 
----
+The project combines an Enigma cipher implementation, embedded firmware, custom electronics, a physical keyboard and lampboard, sensors, and motor-driven rotors in a functional prototype.
 
-## Table of Contents
+![Completed ENIGMA prototype](docs/images/enigma-prototype-01.jpg)
 
-- [ENIGMA Project](#enigma-project)
-  - [Table of Contents](#table-of-contents)
-  - [Project Overview](#project-overview)
-  - [Objectives](#objectives)
-  - [Historical Background](#historical-background)
-  - [System Features](#system-features)
-    - [Software Features](#software-features)
-    - [Hardware Features](#hardware-features)
-    - [Engineering Features](#engineering-features)
-  - [Technologies Used](#technologies-used)
-    - [Software](#software)
-    - [Embedded Hardware](#embedded-hardware)
-    - [Libraries](#libraries)
-  - [Project Architecture](#project-architecture)
-    - [1. Software Layer](#1-software-layer)
-    - [2. Hardware Layer](#2-hardware-layer)
-    - [3. Test-Oriented Design](#3-test-oriented-design)
-  - [Repository Structure](#repository-structure)
+## Overview
 
----
+The prototype recreates the core operating principles of the historical Enigma machine with modern embedded hardware. A key press is read from the physical keyboard, processed through the configurable rotor and reflector model, and displayed on the LED lampboard. Stepper motors reproduce rotor movement, while magnetic and analog sensors monitor the physical state of the mechanism.
 
-## Project Overview
+The repository contains:
 
-This project aims to recreate the **Enigma machine** as a modern embedded system while preserving the core principles of its original electromechanical operation. The project combines:
+- the integrated Raspberry Pi Pico firmware;
+- a standalone C implementation of the cipher;
+- focused hardware test programs;
+- KiCad sources for the custom circuit boards;
+- project documentation, schematics, poster, and prototype photographs.
 
-- **cryptographic algorithm design**
-- **embedded programming**
-- **hardware integration**
-- **modular testing of physical components**
+## Main features
 
-The result is an academic prototype capable of simulating the historical encryption and decryption process while interacting with real hardware such as a keyboard matrix, LEDs, sensors, and stepper motors.
+- Reversible Enigma encryption and decryption
+- Configurable rotor wiring, position, and offset
+- Automatic rotor stepping
+- Matrix keyboard input
+- WS2812B LED lampboard output
+- Stepper-motor rotor actuation
+- Plugboard scanning through I/O expanders
+- Rotor identification and position sensing
+- Modular test programs for individual subsystems
 
----
+## Hardware and software
 
-## Objectives
+### Embedded platform
 
-The main objectives of the project are:
+- Raspberry Pi Pico
+- Arduino framework through PlatformIO
+- WS2812B addressable LEDs
+- PCA95x5 I/O expanders
+- MCP3008 ADC
+- Stepper motors and magnetic sensors
 
-- Reproduce the logic of the original Enigma machine
-- Implement the encryption algorithm in **C (C11)**
-- Design a modular embedded architecture using **Arduino**
-- Integrate physical input and output components
-- Validate each hardware subsystem independently before full integration
-- Provide a faithful and educational demonstration of historical cryptography using modern tools. 
+### Main dependencies
 
----
+PlatformIO installs the firmware dependencies declared in [`platformio.ini`](Firmware/EnigmaV1/platformio.ini):
 
-## Historical Background
+- Adafruit NeoPixel
+- Adafruit MCP3008
+- Adafruit BusIO
+- PCA95x5
+- RPI Pico Timer Interrupt
 
-The Enigma machine was a rotor-based cipher device used extensively during the 20th century. Its operation relied on:
+The standalone cipher test requires a C11-compatible GCC toolchain and `make`.
 
-- a keyboard for user input
-- a set of rotating wired rotors
-- a reflector to send the signal back through the rotor stack
-- a lampboard to display the encrypted letter
-
-One of the most remarkable properties of the Enigma system is that the encryption process is **reversible**: the same machine configuration can be used both to encrypt and decrypt a message. This project recreates that principle with a combination of software logic and embedded hardware.
-
----
-
-## System Features
-
-### Software Features
-- Complete implementation of the Enigma encryption algorithm in **C**
-- Rotor data structures with:
-  - wiring
-  - position
-  - offset
-- Reflector modeling
-- Forward rotor traversal
-- Reflection
-- Backward rotor traversal
-- Automatic rotor stepping during encryption
-
-### Hardware Features
-- Matrix keyboard scanning for character input
-- WS2812B LED output for encrypted letter display
-- Stepper motor control to simulate physical rotor motion
-- Magnetic and analog sensing to detect positions and identify rotors
-
-### Engineering Features
-- Separation between algorithmic logic and hardware testing
-- Independent validation of subsystems before integration
-- Modular project organization for easier maintenance and debugging
-
----
-
-## Technologies Used
-
-### Software
-- **C (C11 standard)** for the Enigma algorithm
-- **GCC** compiler
-- **Makefile** for build automation
-- **VS Code** for development and debugging 
-
-### Embedded Hardware
-- **Arduino** platforms
-- **Stepper motors**
-- **WS2812B LEDs**
-- **Matrix keyboards**
-- **Magnetic and analog sensors**
-
-### Libraries
-- **Adafruit NeoPixel** for LED strip control
-
----
-
-## Project Architecture
-
-The system is divided into two main layers.
-
-### 1. Software Layer
-The Enigma algorithm is implemented as a standalone software module in C. The machine is modeled using structures that represent:
-
-- rotors
-- rotor offsets
-- rotor positions
-- rotor wirings
-- reflector configuration
-
-The encryption process follows the historical Enigma sequence:
-
-1. Rotor stepping
-2. Forward traversal through the rotors
-3. Reflection
-4. Backward traversal through the rotors
-5. Output character generation
-
-### 2. Hardware Layer
-The embedded layer connects the software model to physical components:
-
-- the **keyboard** provides the input
-- the **LEDs** display the encrypted character
-- the **stepper motors** reproduce the rotor movement
-- the **sensors** validate the physical state of the system 
-
-### 3. Test-Oriented Design
-Before full integration, each hardware block is tested individually. This approach reduces debugging complexity and improves reliability during final assembly.
-
----
-
-## Repository Structure
+## Repository structure
 
 ```text
 .
-├── README.md
-└── Tests/
-    ├── algorithme/
-    │   ├── enigma.h
-    │   ├── enigma.c
-    │   ├── main.c
-    │   └── Makefile
-    ├── Keyboard_LED/
-    │   └── Keyboard_LED.ino
-    ├── LED_simple/
-    │   └── LED_simple.ino
-    ├── magnetic_sensor/
-    │   └── magnetic_sensor.ino
-    ├── Rotor_ID/
-    │   └── Rotor_ID.ino
-    └── Stepper/
-        └── Stepper.ino
+├── Firmware/
+│   └── EnigmaV1/          Integrated PlatformIO firmware
+├── Hardware/
+│   ├── KiCad/             PCB schematics and layouts
+│   └── io-assignment.drawio
+├── Tests/                 Algorithm and hardware subsystem tests
+├── docs/
+│   ├── images/            Prototype photographs
+│   ├── poster/            Project poster source
+│   ├── report/            Report and requirements document
+│   └── schematics/        PDF schematics and I/O diagram
+├── .gitignore
+└── README.md
+```
+
+## Build the firmware
+
+Install [PlatformIO](https://platformio.org/), then run:
+
+```bash
+cd Firmware/EnigmaV1
+pio run
+```
+
+Connect the Raspberry Pi Pico and upload the firmware with:
+
+```bash
+pio run --target upload
+```
+
+The exact upload procedure can depend on the Pico boot mode and the locally detected serial or USB device.
+
+## Build the standalone cipher test
+
+```bash
+cd Tests/algorithme
+make
+./app
+```
+
+Clean the generated files with:
+
+```bash
+make clean
+```
+
+## Hardware design
+
+The [`Hardware/KiCad`](Hardware/KiCad) directory contains the editable KiCad sources for four custom boards:
+
+- main controller board;
+- keyboard board;
+- LED board;
+- Hall-sensor board.
+
+Reference exports are available in the documentation:
+
+- [Main-board schematic](docs/schematics/main-board-schematic.pdf)
+- [Keyboard schematic](docs/schematics/keyboard-schematic.pdf)
+- [I/O assignment diagram](docs/schematics/io-assignment.png)
+
+## Documentation
+
+- [Project report (DOCX)](docs/report/enigma-report.docx)
+- [Functional requirements (PDF)](docs/report/requirements.pdf)
+- [Project poster (PPTX)](docs/poster/enigma-poster.pptx)
+- [Firmware file overview](Firmware/EnigmaV1/FILE_TREE.md)
+
+## Prototype gallery
+
+| Overall prototype | Internal mechanism |
+| --- | --- |
+| ![ENIGMA prototype](docs/images/enigma-prototype-02.jpg) | ![ENIGMA mechanism](docs/images/enigma-prototype-03.jpg) |
+
+## Project status
+
+The repository represents the final functional academic prototype delivered in 2026. The programs under `Tests/` document the incremental validation work; the integrated implementation is under `Firmware/EnigmaV1/`.
+
+## Usage notice
+
+This repository is published as an academic and portfolio project. No open-source license has been selected yet; unless a license is added, the project remains protected by copyright and reuse is not automatically granted.

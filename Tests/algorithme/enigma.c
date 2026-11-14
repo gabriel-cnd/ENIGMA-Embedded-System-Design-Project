@@ -118,6 +118,7 @@ int rotor_reverse(struct Rotor *rotor, int index)
 
 uint8_t cycleAllRotors(struct Enigma *machine, uint8_t inChar)
 {
+    (void)inChar;
     //local vars
     uint8_t i = 0, outChar = 0;
 
